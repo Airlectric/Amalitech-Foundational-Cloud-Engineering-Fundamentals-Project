@@ -89,3 +89,9 @@ The readiness of the operations is average since the team is still relying on ma
 
 To be able to migrate successfully, the organization needs to move to proactive monitoring, automated patching, backup policies, and scripted infrastructure deployments. CloudWatch should be configured to generate metrics, dashboards and alarms to ensure that problems are identified in time before they impact the customers. The response times should be enhanced by creating incident response plans, runbooks and post incident reviews. The disaster recovery target objectives (RPO and RTO) should be documented and tested with the help of the backup and restore drills. The success of operations is determined by the extent of adopting automation, minimizing manual server management and frequent review of the operational performance. With automated monitoring and patching, and alarms, the environment will become more reliable, with reduced downtime and recovery.
 
+
+
+## Task 4 – Design an Improved Architecture
+
+### Improved Architecture Diagram
+![Revised AWS Architecture](images/AWS_Architecture_diagram_of_a_two_teir_achitecture.png)
