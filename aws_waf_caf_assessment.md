@@ -4,7 +4,7 @@
 
 | AWS Resource                  | Details                                                                 |
 |-------------------------------|-------------------------------------------------------------------------|
-| VPC                           | Single VPC with public and private subnets (probably only 1 or 2 AZs)   |
+| VPC                           | Single VPC with public and private subnets|
 | EC2 instances                 | 1–2 t3.medium or m5.large instances running the web or frontend /application tier   |
 | Amazon RDS                    | Single-AZ MySQL or PostgreSQL instance in a private subnet             |
 | Security Groups               | Web SG: ports 80, 443, 22 open from 0.0.0.0/0|
@@ -95,3 +95,32 @@ To be able to migrate successfully, the organization needs to move to proactive 
 
 ### Improved Architecture Diagram
 ![Revised AWS Architecture](images/AWS_Architecture_diagram_of_a_two_teir_achitecture.png)
+
+
+### 1. How the new design aligns with the five pillars of the AWS Well-Architected Framework
+
+- **Operational Excellence**
+  SSH access has been eliminated. Systems Manager Session Manager (no open port 22) will now be used by admins. Every server, networking is to be developed using CloudFormation templates to make it repeatable and automated.
+
+- **Security**
+  Security groups can only permit the ALB to access EC2 on ports 80/443 and EC2 only to access RDS on ports 3306. The database is entirely locked out of the internet.Also it is a private subnet and can only be accessed by the EC2 instances.
+
+- **Reliability**
+  All this is distributed on two Availability Zones. Application LB, Auto Scaling Group and Multi-AZ RDS (primary and standby replica) ensure the application remains online even when one of the entire AZs is down.
+
+- **Performance Efficiency**  
+  The frontend will store its static files (images, CSS, JavaScript, etc.) in S3 and serve them with the help of CloudFront CDN to ensure that all users worldwide have high loading speeds and the EC2 servers are less overloaded.
+
+- **Cost Optimization**  
+  Auto Scaling Group has an initial scale of 2 instances and it can be scaled down to 1 or even none when the traffic is low. Our Compute Savings Plans, which we will also utilize later, will be to save more by not charging full on-demand price.
+
+The following is how the design adheres to the AWS Cloud Adoption Framework (CAF) best practices.
+It is an architecture based on standard, familiar AWS services (VPC, ALB, ASG, Multi-AZ RDS, private/public subnets, NAT Gateway), which are easily converted to reusable CloudFormation templates. The Platform and Governance teams are assisted by this. It is highly available by default,and has Security and Operations perspectives. It plans its work with the help of managed services (ALB, RDS Multi-AZ, CloudFront) to minimize the work of the People team.
+
+This new design addresses each risk that we identified in Task 1 (single-AZ, open ports, no scaling, no CDN, etc.).
+
+
+
+### Brief Reflection
+
+Working on this lab after taking my Cloud Practitioner certification made a lot of things fall into place. I was finally able to realize how the five Well-Architected pillars are actually used in a real application and not just memorize them for the exams. My sudden moment when every thing clicked came when I understood that it is not sufficient to move servers to EC2/RDS only, but we need to consider high availability, security, and cost since the very beginning. The CAF section made me realize that, although technology is significant in migrating to the cloud, people, training, and business objectives are equally relevant. I felt like a cloud architect when drawing the improved architecture, although it took a while for me to complete it. I now realize the reason AWS continuously speaks of building it the right way the first time and not correcting it later. This lab transformed theoretical understanding of CCP to practical thinking which was what I required. Thank you!
