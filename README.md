@@ -34,7 +34,3 @@ I then explained exactly how this new design satisfies all 5 WAF pillars and sup
 
 ## Conclusion
 Doing this lab after getting my Cloud Practitioner certification made everything finally click. I now understand why AWS keeps repeating “build it secure and reliable from day one” instead of fixing it later.
-
-This repository is ready for submission.
-
-Thank you!
